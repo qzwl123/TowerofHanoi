@@ -31,17 +31,17 @@ var delay = 200; //in milliseconds
     var t=null;
     var stop=false;
 
-    
+
     function init(){
         if (document.getElementById){
         	var diskno = document.hanoi.diskno;
 
             diskno.options.selectedIndex = 0;
             drawTowers();
-            drawDisks(parseInt(diskno.options[diskno.options.selectedIndex].text));		
+            drawDisks(parseInt(diskno.options[diskno.options.selectedIndex].text));
         }
     }
-    
+
     function initVars(){
         for (var i=0;i<disksOnTower1.length;i++){
             disksOnTower1[i]=null;
@@ -61,7 +61,7 @@ var delay = 200; //in milliseconds
         demo=false;
         document.hanoi.btnUndo.disabled=true;
     }
-    
+
     function drawTowers(){
     	var title=document.getElementById("title");
     	var tower1=document.getElementById("tower1");
@@ -69,13 +69,13 @@ var delay = 200; //in milliseconds
     	var tower3=document.getElementById("tower3");
     	var settings=document.getElementById("settings");
         var titlewidth = parseInt(title.style.width);
-        var titleheight = parseInt(title.style.height);        
+        var titleheight = parseInt(title.style.height);
         var towerwidth = parseInt(tower1.style.width);
         var towerheight = parseInt(tower1.style.height);
         var settingswidth = parseInt(settings.style.width);
         midhoriztower = parseInt(document.getElementById("horiztower1").style.width)/2;
         diskheight = parseInt(document.getElementById("disk1").style.height);
-                
+
         title.style.left=offsetleft+(1.5*towerwidth)+offsettower-(titlewidth/2)+"px";
         title.style.top=offsettop+"px";
         tower1.style.left=offsetleft+"px";
@@ -87,7 +87,7 @@ var delay = 200; //in milliseconds
         settings.style.left=offsetleft+(1.5*towerwidth)+offsettower-(settingswidth/2)+"px";
         settings.style.top=parseInt(tower1.style.top)+towerheight+offsethoriz+"px";
     }
-    
+
     function drawDisks(disknum){
     	var tower1=document.getElementById("tower1");
         var disktop = parseInt(tower1.style.top)+parseInt(document.getElementById("horiztower1").style.top);
@@ -97,23 +97,23 @@ var delay = 200; //in milliseconds
         basetop = disktop;
         for (var i=disksOnTower1.length;i>=1;i--){
         	disk = document.getElementById("disk"+i);
-			disk.style.zIndex=++zindex;	
+			disk.style.zIndex=++zindex;
             if (i<=disknum){
                 disk.style.left=lefttower1+midhoriztower-parseInt(disk.style.width)/2+"px";
                 disk.style.top=disktop-diskheight-1+"px";
                 disktop = parseInt(disk.style.top);
                 disksOnTowers[0][i-1]=disk;
-            }            
+            }
             else {
                 disk.style.left="-250px";
                 disk.style.top="-250px";
                 disksOnTowers[0][i-1]=null;
             }
-        }       
+        }
         f.minmove.value=f.diskno.options[f.diskno.options.selectedIndex].value;
         f.yourmove.value=0;
     }
-    
+
     function newGame(obj){
         if (movectr>0 && !gameOver && !stop){
             if (confirm("重新开始游戏，当前游戏自动结束，是否继续操作？")){
@@ -127,7 +127,7 @@ var delay = 200; //in milliseconds
             drawDisks(parseInt(obj.options[obj.options.selectedIndex].text));
         }
     }
-    
+
     function initializeDrag(disk,e){
     	if (!e) e=event;
         if (stop){
@@ -144,7 +144,7 @@ var delay = 200; //in milliseconds
         tempy=parseInt(disk.style.top);
         document.onmousemove=dragDisk;
     }
-    
+
     function dragDisk(e){
         if (!e) e=event;
         zindex++;
@@ -158,18 +158,18 @@ var delay = 200; //in milliseconds
         var tower2Left = parseInt(objTower2.style.left);
         var tower3Left = parseInt(objTower3.style.left);
         var tower3Width = parseInt(objTower3.style.width);
-        
+
         objDisk.style.zIndex=zindex;
         objDisk.style.left=posX+'px';
-        objDisk.style.top=posY+'px';        
-        
+        objDisk.style.top=posY+'px';
+
         if (e.clientX>=document.body.clientWidth-10 || e.clientY>=document.body.clientHeight-5 || e.clientX==5 || e.clientY==5){ //outside available window
             indexTo=indexFr;
             dropDisk(objDisk);
         }
         else if ( //in the vicinity of tower 3
-            (tower3Left<=posX) && 
-            (tower3Left+tower3Width>=posX) && 
+            (tower3Left<=posX) &&
+            (tower3Left+tower3Width>=posX) &&
             (parseInt(objTower3.style.top)+parseInt(objTower3.style.height)>posY)
             ){
             indexTo=3;
@@ -219,7 +219,7 @@ var delay = 200; //in milliseconds
             pushDisk(disk,indexFr);	//put disk back to original tower
             getNewTop(indexFr,disk);
         }
-      
+
         drag=false;
         f.yourmove.value=movectr;
         if (gameStatus) {
@@ -233,8 +233,8 @@ var delay = 200; //in milliseconds
             gameOver=true;
         }
         return;
-    }      
-    
+    }
+
     function checkStatus(){
         var gameStat = false;
         var disks=0;
@@ -258,9 +258,9 @@ var delay = 200; //in milliseconds
         else {
             disk.style.left=towerLeft+midhoriztower-diskWidth/2+"px";
             disk.style.top=basetop-diskheight-1+"px";
-        }	
+        }
     }
-   
+
     function getNewTop(index,disk){
         if (disk==null){		//pop
             for (var i=0;i<disksOnTower1.length-1;i++){
@@ -275,7 +275,7 @@ var delay = 200; //in milliseconds
             disksOnTowers[index-1][0]=disk;
         }
     }
-    
+
     function solve(btn){
         if (btn.value=="自动操作"){
             if (movectr>0 && !gameOver && !stop)
@@ -290,7 +290,7 @@ var delay = 200; //in milliseconds
             f.btnUndo.disabled=true;
             disknum = parseInt(f.diskno.options[f.diskno.options.selectedIndex].text);
             drawDisks(disknum);
-            getMoves(0, 2, 1, disknum); 
+            getMoves(0, 2, 1, disknum);
             t=window.setTimeout("moveDisk()",delay);
         }
         else {
@@ -303,10 +303,10 @@ var delay = 200; //in milliseconds
                 stop=true;
                 demo=false;
             }
-            
+
         }
     }
-    
+
     function moveDisk(){
         frm = document.hanoi;
         disk=disksOnTowers[arrFr[pos]][0];
@@ -319,7 +319,7 @@ var delay = 200; //in milliseconds
         if (movectr<parseInt(frm.minmove.value)) t=window.setTimeout("moveDisk()",delay);
         else {
             //alert("Can you do that in "+movectr+" moves?");
-            swal({   title: "搞定了！",   text: movectr+"步！你还能够更快完成它吗？",   imageUrl: "images/pinpin.png" });
+            swal({   title: "搞定了！",   text: movectr+"步！你还能够更快完成它吗？",   imageUrl: "https://cdn.luogu.com.cn/upload/image_hosting/r2gj5r3g.png" });
             //swal("Can you do that in "+movectr+" moves?");
             gameOver=true;
             stop=false;
@@ -342,7 +342,7 @@ var delay = 200; //in milliseconds
         }
     }
 
-    
+
     function unDo(btn){
         disk=disksOnTowers[currTower-1][0];
         pushDisk(disk,prevTower);
@@ -352,9 +352,9 @@ var delay = 200; //in milliseconds
         document.hanoi.yourmove.value=movectr;
         btn.disabled=true;
     }
-    
+
     function displayIns(){
-        var msg = "你要将所有的盘子从TOWER 1移动到TOWER 3\n";
+        var msg = "你要将所有的盘子从　x　柱　移动到　ｚ　柱　\n";
         msg += "你每次只能移动一个盘子。\n";
         msg += "游戏最重要的规则是大的盘子不能放在小的盘子上面！";
         // var msg="Try to move all the disks from TOWER 1 to TOWER 3.\n";
@@ -366,4 +366,4 @@ var delay = 200; //in milliseconds
         text: msg,
         imageUrl: 'images/capitaine.png'
     });
-    } 
+    }
